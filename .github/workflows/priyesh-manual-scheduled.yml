@@ -1,0 +1,30 @@
+name: Manual and Scheduled Workflows
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      logLevel:
+        description: 'Log level for this run'
+        required: false
+        default: 'info'
+
+  schedule:
+    - cron: '0 2 * * 1'   # Every Monday 2 AM UTC
+    - cron: '0 * * * *'   # Every hour
+
+jobs:
+  demo-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show inputs
+        run: |
+          echo "Running on environment: ${{ inputs.environment }}"
+          echo "Log level is: ${{ inputs.logLevel }}"
